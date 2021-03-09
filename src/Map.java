@@ -50,7 +50,10 @@ public class Map {
             if(root.getJsonArray("layers").getJsonObject(i).getJsonArray("data") != null) {
                 int dataSize = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").size();
                 for (int j = 0; j < dataSize; j++) {
-                    this.map[j] = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").getInt(j);
+                    int index = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").getInt(j) - 1;
+                    if (index >= 0) {
+                        this.map[j] = index;
+                    }
                 }
             }
         }
@@ -60,7 +63,7 @@ public class Map {
         int i = 0;
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
-                i++;
+
 
                 if(this.map[i] == 0){
                     continue;
@@ -70,6 +73,7 @@ public class Map {
                         this.tiles.get(this.map[i]),
                         AffineTransform.getTranslateInstance(x * this.tileWidth, y * this.tileHeight),
                         null);
+                i++;
             }
         }
     }
