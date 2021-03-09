@@ -65,18 +65,23 @@ public class Map {
     public void draw(Graphics2D graphics){
         for (int layer = 0; layer < this.layersSize; layer++) {
             int i = 0;
+
             for (int y = 0; y < this.height; y++) {
                 for (int x = 0; x < this.width; x++) {
 
                     if (this.map[i][layer] == 0){
                         continue;
                     }
+                    
+                    System.out.println(this.map[i][layer]);
+
                     graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
                     graphics.drawImage(
                             this.tiles.get(this.map[i][layer]),
                             AffineTransform.getTranslateInstance(x * this.tileWidth, y * this.tileHeight),
                             null);
                     i++;
+
                 }
             }
         }
