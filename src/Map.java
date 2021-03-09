@@ -52,7 +52,7 @@ public class Map {
                 for (int j = 0; j < dataSize; j++) {
                     int index = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").getInt(j) - 1;
                     if (index >= 0) {
-                        this.map[j] = index;
+                        this.map[j + (i * dataSize)] = index;
                     }
                 }
             }
@@ -64,8 +64,7 @@ public class Map {
         for (int y = 0; y < this.height; y++) {
             for (int x = 0; x < this.width; x++) {
 
-
-                if(this.map[i] == 0){
+                if (this.map[i] == 0) {
                     continue;
                 }
                 graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
@@ -76,10 +75,6 @@ public class Map {
                         null);
 
                 i++;
-
-
-
-
             }
         }
     }
