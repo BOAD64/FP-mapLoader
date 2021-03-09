@@ -45,7 +45,7 @@ public class Map {
 
         int layersSize = root.getJsonArray("layers").size();
 
-        this.map = new int[this.width * this.height * 3];
+        this.map = new int[this.width * this.height * layersSize];
         for (int i = 0; i < layersSize; i++) {
             if(root.getJsonArray("layers").getJsonObject(i).getJsonArray("data") != null) {
                 int dataSize = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").size();
@@ -68,12 +68,18 @@ public class Map {
                 if(this.map[i] == 0){
                     continue;
                 }
+                graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
                 graphics.drawImage(
                         this.tiles.get(this.map[i]),
                         AffineTransform.getTranslateInstance(x * this.tileWidth, y * this.tileHeight),
                         null);
+
                 i++;
+
+
+
+
             }
         }
     }
