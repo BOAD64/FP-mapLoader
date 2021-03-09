@@ -16,9 +16,12 @@ public class Map {
     private int tileWidth;
     private int tileHeight;
 
+    private int layersSize;
+
+
     private ArrayList<BufferedImage> tiles;
 
-    private int[] map;
+    private int[][] map;
 
     public Map(String filename) {
         this.tiles = new ArrayList<>();
@@ -43,16 +46,16 @@ public class Map {
             e.printStackTrace();
         }
 
-        int layersSize = root.getJsonArray("layers").size();
+        layersSize = root.getJsonArray("layers").size();
 
-        this.map = new int[this.width * this.height * layersSize];
-        for (int i = 0; i < layersSize; i++) {
-            if(root.getJsonArray("layers").getJsonObject(i).getJsonArray("data") != null) {
-                int dataSize = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").size();
-                for (int j = 0; j < dataSize; j++) {
-                    int index = root.getJsonArray("layers").getJsonObject(i).getJsonArray("data").getInt(j) - 1;
-                    if (index >= 0) {
-                        this.map[j + (i * dataSize)] = index;
+        this.map = new int[this.width * this.height][layersSize];
+        for (int layer = 0; layer < layersSize; layer++) {
+            if(root.getJsonArray("layers").getJsonObject(layer).getJsonArray("data") != null) {
+                int dataSize = root.getJsonArray("layers").getJsonObject(layer).getJsonArray("data").size();
+                for (int i = 0; i < dataSize; i++) {
+                    int tileIndex = root.getJsonArray("layers").getJsonObject(layer).getJsonArray("data").getInt(i) - 1;
+                    if (tileIndex >= 0) {
+                        this.map[i][layer] = tileIndex;
                     }
                 }
             }
@@ -60,21 +63,21 @@ public class Map {
     }
 
     public void draw(Graphics2D graphics){
-        int i = 0;
-        for (int y = 0; y < this.height; y++) {
-            for (int x = 0; x < this.width; x++) {
+        for (int layer = 0; layer < this.layersSize; layer++) {
+            int i = 0;
+            for (int y = 0; y < this.height; y++) {
+                for (int x = 0; x < this.width; x++) {
 
-                if (this.map[i] == 0) {
-                    continue;
+                    if (this.map[i][layer] == 0){
+                        continue;
+                    }
+                    graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+                    graphics.drawImage(
+                            this.tiles.get(this.map[i][layer]),
+                            AffineTransform.getTranslateInstance(x * this.tileWidth, y * this.tileHeight),
+                            null);
+                    i++;
                 }
-                graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
-                graphics.drawImage(
-                        this.tiles.get(this.map[i]),
-                        AffineTransform.getTranslateInstance(x * this.tileWidth, y * this.tileHeight),
-                        null);
-
-                i++;
             }
         }
     }
