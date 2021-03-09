@@ -70,11 +70,9 @@ public class Map {
                 for (int x = 0; x < this.width; x++) {
 
                     if (this.map[i][layer] == 0){
+                        i++;
                         continue;
                     }
-                    
-                    System.out.println(this.map[i][layer]);
-
                     graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
                     graphics.drawImage(
                             this.tiles.get(this.map[i][layer]),

@@ -15,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        this.map = new Map("test.json");
+        this.map = new Map("howardsMap.json");
         BorderPane pane = new BorderPane();
         this.canvas = new ResizableCanvas(g -> draw(g), pane);
         pane.setCenter(this.canvas);
